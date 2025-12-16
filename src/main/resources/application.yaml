@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: trade-project
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9094,localhost:9096
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+    consumer:
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      max-poll-records: 50
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.trade.domain
+        isolation.level: read_committed
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/aspen?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: z7763882336
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    idle-timeout: 600000
+    connection-timeout: 30000
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.example.trade.domain
+  configuration:
+    map-underscore-to-camel-case: true
+
+oracle:
+  jdbc:
+    defaultConnectionValidation: LOCAL

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.trade.mapper.DerivedTradeEventMapper">
+    <resultMap id="DerivedTradeMap" type="com.example.trade.domain.DerivedTradeEvent">
+        <id property="derivedTradeId" column="DERIVED_TRADE_ID"/>
+        <result property="sourceTradeId" column="SOURCE_TRADE_ID"/>
+        <result property="caEventId" column="CA_EVENT_ID"/>
+        <result property="accountId" column="ACCOUNT_ID"/>
+        <result property="instrumentId" column="INSTRUMENT_ID"/>
+        <result property="newInstrumentId" column="NEW_INSTRUMENT_ID"/>
+        <result property="originalQty" column="ORIGINAL_QTY"/>
+        <result property="adjustedQty" column="ADJUSTED_QTY"/>
+        <result property="originalPrice" column="ORIGINAL_PRICE"/>
+        <result property="adjustedPrice" column="ADJUSTED_PRICE"/>
+        <result property="effectiveDate" column="EFFECTIVE_DATE"/>
+        <result property="caType" column="CA_TYPE"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.trade.domain.DerivedTradeEvent">
+        INSERT INTO derived_trade (
+        DERIVED_TRADE_ID, SOURCE_TRADE_ID, CA_EVENT_ID, ACCOUNT_ID,
+        INSTRUMENT_ID, NEW_INSTRUMENT_ID, ORIGINAL_QTY, ADJUSTED_QTY,
+        ORIGINAL_PRICE, ADJUSTED_PRICE, EFFECTIVE_DATE, CA_TYPE,
+        CREATE_TIME, UPDATE_TIME
+        ) VALUES (
+        #{derivedTradeId}, #{sourceTradeId}, #{caEventId}, #{accountId},
+        #{instrumentId}, #{newInstrumentId}, #{originalQty}, #{adjustedQty},
+        #{originalPrice}, #{adjustedPrice}, #{effectiveDate}, #{caType},
+        now(), now()
+        )
+    </insert>
+
+    <select id="findById" resultMap="DerivedTradeMap">
+        SELECT
+        DERIVED_TRADE_ID, SOURCE_TRADE_ID, CA_EVENT_ID, ACCOUNT_ID,
+        INSTRUMENT_ID, NEW_INSTRUMENT_ID, ORIGINAL_QTY, ADJUSTED_QTY,
+        ORIGINAL_PRICE, ADJUSTED_PRICE, EFFECTIVE_DATE, CA_TYPE,
+        CREATE_TIME, UPDATE_TIME
+        FROM derived_trade WHERE DERIVED_TRADE_ID = #{derivedTradeId}
+    </select>
+
+    <select id="findByTradeId" resultMap="DerivedTradeMap">
+        SELECT
+        DERIVED_TRADE_ID, SOURCE_TRADE_ID, CA_EVENT_ID, ACCOUNT_ID,
+        INSTRUMENT_ID, NEW_INSTRUMENT_ID, ORIGINAL_QTY, ADJUSTED_QTY,
+        ORIGINAL_PRICE, ADJUSTED_PRICE, EFFECTIVE_DATE, CA_TYPE,
+        CREATE_TIME, UPDATE_TIME
+        FROM derived_trade WHERE SOURCE_TRADE_ID = #{sourceTradeId}
+    </select>
+
+    <select id="findByCaEventId" resultMap="DerivedTradeMap">
+        SELECT
+        DERIVED_TRADE_ID, SOURCE_TRADE_ID, CA_EVENT_ID, ACCOUNT_ID,
+        INSTRUMENT_ID, NEW_INSTRUMENT_ID, ORIGINAL_QTY, ADJUSTED_QTY,
+        ORIGINAL_PRICE, ADJUSTED_PRICE, EFFECTIVE_DATE, CA_TYPE,
+        CREATE_TIME, UPDATE_TIME
+        FROM derived_trade WHERE CA_EVENT_ID = #{caEventId}
+    </select>
+
+    <select id="findByInstrumentId" resultMap="DerivedTradeMap">
+        SELECT
+        DERIVED_TRADE_ID, SOURCE_TRADE_ID, CA_EVENT_ID, ACCOUNT_ID,
+        INSTRUMENT_ID, NEW_INSTRUMENT_ID, ORIGINAL_QTY, ADJUSTED_QTY,
+        ORIGINAL_PRICE, ADJUSTED_PRICE, EFFECTIVE_DATE, CA_TYPE,
+        CREATE_TIME, UPDATE_TIME
+        FROM derived_trade WHERE INSTRUMENT_ID = #{instrumentId}
+    </select>
+</mapper>

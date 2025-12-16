@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.trade.mapper.CaEventMapper">
+    <resultMap id="CaEventMap" type="com.example.trade.domain.CaEvent">
+        <id property="caEventId" column="CA_EVENT_ID"/>
+        <result property="instrumentId" column="INSTRUMENT_ID"/>
+        <result property="caType" column="CA_TYPE"/>
+        <result property="announceDate" column="ANNOUNCE_DATE"/>
+        <result property="effectiveDate" column="EFFECTIVE_DATE"/>
+        <result property="param1" column="PARAM1"/>
+        <result property="param2" column="PARAM2"/>
+        <result property="param3" column="PARAM3"/>
+        <result property="status" column="STATUS"/>
+        <result property="sourceSystem" column="SOURCE_SYSTEM"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.trade.domain.CaEvent">
+        INSERT INTO ca_event (
+        CA_EVENT_ID, INSTRUMENT_ID, CA_TYPE, ANNOUNCE_DATE,
+        EFFECTIVE_DATE, PARAM1, PARAM2, PARAM3, STATUS,
+        SOURCE_SYSTEM, CREATE_TIME, UPDATE_TIME
+        ) VALUES (
+        #{caEventId}, #{instrumentId}, #{caType}, #{announceDate},
+        #{effectiveDate}, #{param1}, #{param2}, #{param3}, #{status},
+        #{sourceSystem}, now(), now()
+        )
+    </insert>
+
+    <select id="findById" resultMap="CaEventMap">
+        SELECT
+        CA_EVENT_ID, INSTRUMENT_ID, CA_TYPE, ANNOUNCE_DATE,
+        EFFECTIVE_DATE, PARAM1, PARAM2, PARAM3, STATUS,
+        SOURCE_SYSTEM, CREATE_TIME, UPDATE_TIME
+        FROM ca_event WHERE CA_EVENT_ID = #{id}
+    </select>
+
+    <select id="findByInstrumentId" resultMap="CaEventMap">
+        SELECT
+        CA_EVENT_ID, INSTRUMENT_ID, CA_TYPE, ANNOUNCE_DATE,
+        EFFECTIVE_DATE, PARAM1, PARAM2, PARAM3, STATUS,
+        SOURCE_SYSTEM, CREATE_TIME, UPDATE_TIME
+        FROM ca_event WHERE Instrument_ID = #{instrumentId}
+    </select>
+</mapper>

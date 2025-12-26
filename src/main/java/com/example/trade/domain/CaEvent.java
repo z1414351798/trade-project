@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class CaEvent implements Serializable {
+public class CaEvent implements Serializable, Versionable{
     private static final long serialVersionUID = 1L;
     private String caEventId;
     private String instrumentId;
@@ -21,4 +21,5 @@ public class CaEvent implements Serializable {
     private String sourceSystem;
     private Date createTime;
     private Date updateTime;
+    private int version;
 }

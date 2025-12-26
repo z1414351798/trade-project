@@ -5,8 +5,7 @@
 <mapper namespace="com.example.trade.mapper.TradeEventMapper">
 
     <resultMap id="TradeEventMap" type="com.example.trade.domain.TradeEvent">
-        <id property="eventId" column="EVENT_ID"/>
-        <result property="tradeId" column="TRADE_ID"/>
+        <id property="tradeId" column="TRADE_ID"/>
         <result property="accountId" column="ACCOUNT_ID"/>
         <result property="instrumentId" column="INSTRUMENT_ID"/>
         <result property="eventType" column="EVENT_TYPE"/>
@@ -22,12 +21,11 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.example.trade.domain.TradeEvent">
-        INSERT INTO trade_event (
-        EVENT_ID, TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
+        INSERT IGNORE INTO trade_event (
+        TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
         QUANTITY, PRICE, AMOUNT, CURRENCY, STATUS, SOURCE_SYSTEM,
         TRADE_DATE, CREATE_TIME, UPDATE_TIME
         ) VALUES (
-        #{eventId},
         #{tradeId},
         #{accountId},
         #{instrumentId},
@@ -44,17 +42,10 @@
         )
     </insert>
 
-    <select id="findById" resultMap="TradeEventMap">
-        SELECT
-        EVENT_ID, TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
-        QUANTITY, PRICE, AMOUNT, CURRENCY, STATUS, SOURCE_SYSTEM,
-        TRADE_DATE, CREATE_TIME, UPDATE_TIME
-        FROM trade_event WHERE EVENT_ID = #{eventId}
-    </select>
 
     <select id="findByTradeId" resultMap="TradeEventMap">
         SELECT
-        EVENT_ID, TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
+        TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
         QUANTITY, PRICE, AMOUNT, CURRENCY, STATUS, SOURCE_SYSTEM,
         TRADE_DATE, CREATE_TIME, UPDATE_TIME
         FROM trade_event WHERE TRADE_ID = #{tradeId}
@@ -62,7 +53,7 @@
 
     <select id="findByInstrumentId" resultMap="TradeEventMap">
         SELECT
-        EVENT_ID, TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
+        TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
         QUANTITY, PRICE, AMOUNT, CURRENCY, STATUS, SOURCE_SYSTEM,
         TRADE_DATE, CREATE_TIME, UPDATE_TIME
         FROM trade_event WHERE INSTRUMENT_ID = #{instrumentId}
@@ -70,10 +61,20 @@
 
     <select id="findByAccountId" resultMap="TradeEventMap">
         SELECT
-        EVENT_ID, TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
+        TRADE_ID, ACCOUNT_ID, INSTRUMENT_ID, EVENT_TYPE,
         QUANTITY, PRICE, AMOUNT, CURRENCY, STATUS, SOURCE_SYSTEM,
         TRADE_DATE, CREATE_TIME, UPDATE_TIME
         FROM trade_event WHERE ACCOUNT_ID = #{accountId}
     </select>
+
+    <update id="updateStatus">
+        UPDATE trade_event
+        SET
+        status = #{status},
+        version = version + 1,
+        update_time = NOW()
+        WHERE trade_id = #{tradeId}
+        AND version = #{version}
+    </update>
 
 </mapper>

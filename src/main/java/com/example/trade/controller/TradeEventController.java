@@ -1,15 +1,17 @@
 package com.example.trade.controller;
 
+import com.example.trade.domain.Response;
 import com.example.trade.domain.TradeEvent;
 import com.example.trade.producer.TradeEventProducer;
 import com.example.trade.service.TradeEventService;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/trade-events")
+@RequestMapping("/trade")
 @RequiredArgsConstructor
 public class TradeEventController {
 
@@ -22,13 +24,27 @@ public class TradeEventController {
         return "OK";
     }
 
-    @GetMapping("/{id}")
-    public TradeEvent get(@PathVariable String id){
-        return service.get(id);
+    @GetMapping("/getByTradeId/{tradeId}")
+    public Response<TradeEvent> getByTradeId(@PathVariable String tradeId){
+        return service.getByTradeId(tradeId);
     }
 
-    @GetMapping("/trade/{tradeId}")
-    public List<TradeEvent> getByTradeId(@PathVariable String tradeId){
-        return service.getByTradeId(tradeId);
+    @GetMapping("/getByAccountId/{accountId}")
+    public Response<List<TradeEvent>> getByAccountId(@PathVariable String accountId){
+        return service.getByAccountId(accountId);
+    }
+
+    @GetMapping("/getByInstrumentId/{instrumentId}")
+    public Response<List<TradeEvent>> getByInstrumentId(@PathVariable String instrumentId){
+        return service.getByInstrumentId(instrumentId);
+    }
+
+    @PostMapping("/updateStatus")
+    public Response<String> updateStatus(@RequestParam String tradeId, @RequestParam String status){
+        try {
+            return service.updateStatus(tradeId,status);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

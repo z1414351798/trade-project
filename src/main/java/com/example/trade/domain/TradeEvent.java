@@ -7,9 +7,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class TradeEvent implements Serializable {
+public class TradeEvent implements Serializable,Versionable {
     private static final long serialVersionUID = 1L;
-    private String eventId;
     private String tradeId;
     private String accountId;
     private String instrumentId;
@@ -23,4 +22,5 @@ public class TradeEvent implements Serializable {
     private Date tradeDate;
     private Date createTime;
     private Date updateTime;
+    private int version;
 }

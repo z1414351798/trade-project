@@ -45,4 +45,14 @@
         SOURCE_SYSTEM, CREATE_TIME, UPDATE_TIME
         FROM ca_event WHERE Instrument_ID = #{instrumentId}
     </select>
+
+    <update id="updateStatus">
+        UPDATE ca_event
+        SET
+        status = #{status},
+        version = version + 1,
+        update_time = NOW()
+        WHERE ca_event_id = #{caEventId}
+        AND version = #{version}
+    </update>
 </mapper>
